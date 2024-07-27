@@ -13,35 +13,35 @@ class ImageCog(commands.Cog, name="Image commands"):
     async def on_ready(self):
         print('Image Cog on ready!')
 
-    # "/char"コマンド
-    @commands.command()
-    async def char2img(self, ctx, *, text: str):
-        font_path = "LightNovelPOPv2.otf"
-        font_size = 40
-        font = ImageFont.truetype(font_path, font_size)
+    # # "/char"コマンド
+    # @commands.command()
+    # async def char2img(self, ctx, *, text: str):
+    #     font_path = "../font/KiyosunaSans-B-1.0.1.otf"
+    #     font_size = 40
+    #     font = ImageFont.truetype(font_path, font_size)
 
-        bbox = ImageDraw.Draw(
-            Image.new('RGB', (1, 1), (255, 255, 255))
-        ).multiline_textbbox((0, 0), text, font=font, spacing=4)
-        text_width = bbox[2] - bbox[0]
-        text_height = bbox[3] - bbox[1]
+    #     bbox = ImageDraw.Draw(
+    #         Image.new('RGB', (1, 1), (255, 255, 255))
+    #     ).multiline_textbbox((0, 0), text, font=font, spacing=4)
+    #     text_width = bbox[2] - bbox[0]
+    #     text_height = bbox[3] - bbox[1]
 
-        padding = int(font_size * 0.2)
-        image_width = text_width + padding * 2
-        image_height = text_height + padding * 2
+    #     padding = int(font_size * 0.2)
+    #     image_width = text_width + padding * 2
+    #     image_height = text_height + padding * 2
 
-        image = Image.new('RGB', (image_width, image_height), color='white')
-        draw = ImageDraw.Draw(image)
+    #     image = Image.new('RGB', (image_width, image_height), color='white')
+    #     draw = ImageDraw.Draw(image)
 
-        # なぜかbboxの開始位置が(0, 0)にならないので原点を合わせておく
-        text_x = padding - bbox[0]
-        text_y = padding - bbox[1]
-        draw.text((text_x, text_y), text, font=font, fill='black')
+    #     # なぜかbboxの開始位置が(0, 0)にならないので原点を合わせておく
+    #     text_x = padding - bbox[0]
+    #     text_y = padding - bbox[1]
+    #     draw.text((text_x, text_y), text, font=font, fill='black')
 
-        with io.BytesIO() as image_binary:
-            image.save(image_binary, 'PNG')
-            image_binary.seek(0)
-            await ctx.send(file=discord.File(fp=image_binary, filename='text.png'))
+    #     with io.BytesIO() as image_binary:
+    #         image.save(image_binary, 'PNG')
+    #         image_binary.seek(0)
+    #         await ctx.send(file=discord.File(fp=image_binary, filename='text.png'))
 
     # /fen2img
     @commands.command(
@@ -80,7 +80,9 @@ class ImageCog(commands.Cog, name="Image commands"):
         try:
             board = chess.Board(fen=fen)
             options_dict = {}
+            orientation = chess.WHITE
             if options:
+                orientation = chess.BLACK if options[0].startswith('b') else chess.WHITE
                 for option in options.split():
                     if "=" in option:
                         key, value = option.split('=', 1)
@@ -94,10 +96,9 @@ class ImageCog(commands.Cog, name="Image commands"):
                         arrows_list.append(chess.svg.Arrow(chess.parse_square(start), chess.parse_square(end)))
             svg_data = chess.svg.board(
                 board,
-                orientation=board.turn,
+                orientation=orientation,
                 fill=fill_dict,
                 arrows=arrows_list,
-                # colors=
                 size=int(options_dict['size']) if 'size' in options_dict else 400
             )
         except ValueError as e:
