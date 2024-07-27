@@ -1,5 +1,68 @@
-**/__pycache__/
-**/*.pyc
-
-.vscode/*
+# Python specific
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+env/
 .env
+
+# Node.js specific
+node_modules/
+npm-debug.log
+package-lock.json
+yarn.lock
+*.log
+
+# Replit specific
+.replit
+replit.nix
+*.replit
+*.nix
+# Ignoring the default Glitch configuration files
+.glitch-assets
+.glitch-logs
+.glitch-project
+
+# IDE and editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# System specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# General
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.pid
+*.seed
+
+# Environments
+.env/
+*.env
+.env.local
+.env.*.local
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Docker
+docker-compose.override.yml
+docker-compose.local.yml
+Dockerfile
+.dockerignore

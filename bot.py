@@ -8,8 +8,8 @@ load_dotenv()
 
 # インテントの設定
 intents = discord.Intents.default()
-intents.typing = False # typingに関するイベントを無効化（オプション）
-intents.message_content = True # # message_contentに関するイベントを無効化（これは必須）
+intents.typing = False  # typingに関するイベントを無効化（オプション）
+intents.message_content = True  # # message_contentに関するイベントを無効化（これは必須）
 
 # Botの設定
 bot = commands.Bot(command_prefix='/', intents=intents)  # インテントを指定してBotを作成
@@ -27,7 +27,7 @@ async def on_ready():
 
 # Botのトークン
 try:
-    TOKEN = os.getenv('DISCORD_BOT_TOKEN')
+    TOKEN = os.environ['DISCORD_BOT_TOKEN']
     if TOKEN is None:
         raise ValueError("Token does not exist.")
 except ValueError as e:
