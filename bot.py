@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import os
+import asyncio
 
 # .envから環境変数を読み込む
 load_dotenv()
@@ -13,6 +14,18 @@ intents.message_content = True  # # message_contentに関するイベントを�
 
 # Botの設定
 bot = commands.Bot(command_prefix='/', intents=intents)  # インテントを指定してBotを作成
+
+# 再接続を試みるカスタムランナー
+async def run_bot():
+    while True:
+        try:
+            await bot.start(TOKEN)
+        except (discord.ConnectionClosed, asyncio.CancelledError):
+            print("Connection lost, attempting to reconnect...")
+            await asyncio.sleep(5)  # 5秒待機してから再接続を試みる
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            break
 
 # 起動時のイベント
 @bot.event
@@ -35,4 +48,5 @@ except ValueError as e:
     exit(1)
 
 # Botを実行
-bot.run(TOKEN)
+loop = asyncio.get_event_loop()
+loop.run_until_complete(run_bot())
