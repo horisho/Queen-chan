@@ -1,8 +1,11 @@
 import discord
 from discord.ext import commands
+import discord.ext.commands
 from dotenv import load_dotenv
 import os
 import asyncio
+
+import discord.ext
 
 # .envから環境変数を読み込む
 load_dotenv()
@@ -34,6 +37,8 @@ async def on_ready():
     # カテゴリを読み込み
     try:
         await bot.load_extension('cogs.chess_cog')
+    except discord.ext.commands.errors.ExtensionAlreadyLoaded:
+        print("Extension 'cogs.chess_cog' is already loaded, skipping...")
     except Exception as e:
         print(f"Error: {e}")
         exit(1)
