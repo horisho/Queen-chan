@@ -24,7 +24,7 @@ class ChessCog(commands.Cog, name="Chess commands"):
             board = chess.Board(fen=fen)
         except ValueError as e:
             await ctx.send(f"Error: {e}")
-            exit(1)
+            return
 
         svg_data = chess.svg.board(
             board,
@@ -70,7 +70,7 @@ class ChessCog(commands.Cog, name="Chess commands"):
             )
         except ValueError as e:
             await ctx.send(f"Error: {e}")
-            exit(1)
+            return
 
         png_data = cairosvg.svg2png(bytestring=svg_data.encode('utf-8'))
         with io.BytesIO(png_data) as image_binary:
