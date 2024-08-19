@@ -4,6 +4,8 @@ import discord.ext.commands
 from dotenv import load_dotenv
 import os
 import asyncio
+import logging
+from logging.handlers import RotatingFileHandler
 
 import discord.ext
 
@@ -14,6 +16,10 @@ load_dotenv()
 intents = discord.Intents.default()
 intents.typing = False  # typingに関するイベントを無効化（オプション）
 intents.message_content = True  # # message_contentに関するイベントを有効化（これは必須）
+
+# ログファイル設定
+handler = RotatingFileHandler('bot.log', maxBytes=5000000, backupCount=5)
+logging.basicConfig(handlers=[handler], level=logging.INFO)
 
 # Botの設定
 bot = commands.Bot(command_prefix='/', intents=intents)  # インテントを指定してBotを作成
@@ -42,6 +48,10 @@ async def on_ready():
     except Exception as e:
         print(f"Error: {e}")
         exit(1)
+
+@bot.event
+async def on_error(event, *args, **kwargs):
+    logging.exception(f"Error on event {event}: {args} {kwargs}")
 
 # Botのトークン
 try:
