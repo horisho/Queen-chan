@@ -7,6 +7,7 @@ import io
 from PIL import Image
 import time
 import logging
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -141,7 +142,7 @@ class ChessCog(commands.Cog):
             await self._safe_followup(interaction, file=discord.File(fp=gif_io, filename=filename))
     # Done
 
-    async def _safe_followup(self, interaction: discord.Interaction, content: str | None = None, **kwargs):
+    async def _safe_followup(self, interaction: discord.Interaction, content: Optional[str] = None, **kwargs):
         """Send followup or initial response safely after possible defer."""
         try:
             if interaction.response.is_done():
