@@ -12,6 +12,7 @@ build/
 venv/
 env/
 .env
+.env.*
 
 # Node.js specific
 node_modules/
